@@ -13,7 +13,11 @@
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
       <Name>StageToNDS.dtsx</Name>
+<<<<<<< HEAD
       <LastWriteTime>2024-11-21T15:14:19.4374077Z</LastWriteTime>
+=======
+      <LastWriteTime>2024-11-22T08:41:42.3407217Z</LastWriteTime>
+>>>>>>> 1f473ab271ea4222d83aaf2a7ea8e4959ead39b5
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
   </LastBuildInfos>
