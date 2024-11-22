@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="StageToNDS"
   DTS:PackageType="5"
-  DTS:VersionBuild="32"
-  DTS:VersionGUID="{BD6998E4-652D-4E2C-81DA-8DC8AA1B10A6}">
+  DTS:VersionBuild="42"
+  DTS:VersionGUID="{8D018A1A-C7C2-471F-80FF-E4465096B692}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -88,7 +88,12 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{7E9A392A-CEDA-4414-ACD8-674EAC50FCF0}"
-          SQLTask:SqlStatementSource="select lset,cet from Dataflow_metadata where ProcessName='Category_StagetoNDS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="select cet from Dataflow_metadata where ProcessName='Category_StagetoNDS'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::cet" />
+        </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -130,7 +135,7 @@
                   <outputColumns>
                     <outputColumn
                       refId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Created]"
-                      dataType="dbTimeStamp"
+                      dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       lineageId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Created]"
@@ -141,18 +146,18 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[GETDATE]()</property>
+                          name="Expression">@[User::cet]</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">GETDATE()</property>
+                          name="FriendlyExpression">@[User::cet]</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
                       refId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Last Updated]"
-                      dataType="dbTimeStamp"
+                      dataType="date"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       lineageId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Last Updated]"
@@ -163,13 +168,13 @@
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">[GETDATE]()</property>
+                          name="Expression">NULL(DT_DATE)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">GETDATE()</property>
+                          name="FriendlyExpression">NULL(DT_DATE)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -193,6 +198,79 @@
                       refId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Load Category_NDS\Derived Column 1"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column 1"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Load Category_NDS\Derived Column 1.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Load Category_NDS\Derived Column 1.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Output].Columns[Last Updated]"
+                      dataType="date"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Output].Columns[Last Updated]"
+                      name="Last Updated"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">@[User::cet]</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">@[User::cet]</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Load Category_NDS\Derived Column 1.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -490,7 +568,7 @@ where [refTable].[Category] = ?</property>
                   expressionType="Notify"
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">Update Category_NDS 
-Set Category = ?, [Last Updated] = getdate()
+Set Category = ?, [Last Updated] = ?
 Where Category_SK = ?</property>
                 <property
                   dataType="System.Int32"
@@ -522,10 +600,16 @@ Where Category_SK = ?</property>
                       externalMetadataColumnId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
                       lineageId="Package\Load Category_NDS\Load AQI_Stage.Outputs[OLE DB Source Output].Columns[Category]" />
                     <inputColumn
+                      refId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].Columns[Last Updated]"
+                      cachedDataType="date"
+                      cachedName="Last Updated"
+                      externalMetadataColumnId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Output].Columns[Last Updated]" />
+                    <inputColumn
                       refId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].Columns[Category_SK]"
                       cachedDataType="i4"
                       cachedName="Category_SK"
-                      externalMetadataColumnId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      externalMetadataColumnId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
                       lineageId="Package\Load Category_NDS\Lookup.Outputs[Lookup Match Output].Columns[Category_SK]" />
                   </inputColumns>
                   <externalMetadataColumns
@@ -545,8 +629,19 @@ Where Category_SK = ?</property>
                     </externalMetadataColumn>
                     <externalMetadataColumn
                       refId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
-                      dataType="i4"
+                      dataType="dbTimeStamp"
                       name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="i4"
+                      name="Param_2">
                       <properties>
                         <property
                           dataType="System.Int32"
@@ -671,13 +766,13 @@ Where Category_SK = ?</property>
                       lineageId="Package\Load Category_NDS\Load AQI_Stage.Outputs[OLE DB Source Output].Columns[Category]" />
                     <inputColumn
                       refId="Package\Load Category_NDS\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Created]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="date"
                       cachedName="Created"
                       externalMetadataColumnId="Package\Load Category_NDS\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Created]"
                       lineageId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Created]" />
                     <inputColumn
                       refId="Package\Load Category_NDS\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Last Updated]"
-                      cachedDataType="dbTimeStamp"
+                      cachedDataType="date"
                       cachedName="Last Updated"
                       externalMetadataColumnId="Package\Load Category_NDS\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Last Updated]"
                       lineageId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output].Columns[Last Updated]" />
@@ -738,8 +833,13 @@ Where Category_SK = ?</property>
               name="Derived Column Output"
               startId="Package\Load Category_NDS\Derived Column.Outputs[Derived Column Output]" />
             <path
-              refId="Package\Load Category_NDS.Paths[Lookup Match Output]"
+              refId="Package\Load Category_NDS.Paths[Derived Column Output1]"
               endId="Package\Load Category_NDS\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="Derived Column Output"
+              startId="Package\Load Category_NDS\Derived Column 1.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Load Category_NDS.Paths[Lookup Match Output]"
+              endId="Package\Load Category_NDS\Derived Column 1.Inputs[Derived Column Input]"
               name="Lookup Match Output"
               startId="Package\Load Category_NDS\Lookup.Outputs[Lookup Match Output]" />
             <path
@@ -770,7 +870,7 @@ Where Category_SK = ?</property>
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{7E9A392A-CEDA-4414-ACD8-674EAC50FCF0}"
-          SQLTask:SqlStatementSource="update Dataflow_Metadata&#xA;set CET=getdate(), StatusKey = 1&#xA;where ProcessName='Category_StagetoNDS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="update Dataflow_Metadata&#xA;set cet=getdate()&#xA;where ProcessName='Category_StagetoNDS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -782,7 +882,7 @@ Where Category_SK = ?</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Set Done Category_NDS"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
@@ -799,12 +899,29 @@ Where Category_SK = ?</property>
       DTS:LocaleID="-1"
       DTS:ObjectName="Set Error Category_NDS"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{7E9A392A-CEDA-4414-ACD8-674EAC50FCF0}"
           SQLTask:SqlStatementSource="Update Dataflow_Metadata&#xA;Set StatusKey = 3&#xA;Where ProcessName = 'Category_StagetoNDS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Set LSET Category_NDS"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{CC8E541F-367C-4760-BAE0-C7D0365BCA2A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Set LSET Category_NDS"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7E9A392A-CEDA-4414-ACD8-674EAC50FCF0}"
+          SQLTask:SqlStatementSource="update Dataflow_Metadata&#xA;set lset = cet&#xA;where ProcessName='Category_StagetoNDS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -867,6 +984,20 @@ Where Category_SK = ?</property>
       DTS:ObjectName="Constraint 4"
       DTS:To="Package\Set Error Category_NDS"
       DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{42FF01CE-9E62-4FA9-B6B5-18C480B7733A}"
+      DTS:From="Package\Set Done Category_NDS"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Set LSET Category_NDS" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{8ABDA933-44DF-4DE2-AC28-81197797E780}"
+      DTS:From="Package\Set Error Category_NDS"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\Set LSET Category_NDS" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -892,6 +1023,18 @@ Where Category_SK = ?</property>
           Size="187.2,41.6"
           Id="Package\Set CET Category_NDS"
           TopLeft="282.142857743465,130.764705767733" />
+        <NodeLayout
+          Size="192.8,41.6"
+          Id="Package\Set Done Category_NDS"
+          TopLeft="126.122449248073,388.036974538843" />
+        <NodeLayout
+          Size="192,41.6"
+          Id="Package\Set Error Category_NDS"
+          TopLeft="426.020409070151,386.578151012113" />
+        <NodeLayout
+          Size="208,41.6"
+          Id="Package\Set Ongoing Category_NDS"
+          TopLeft="275.000000585403,32.8588235153356" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
           TopLeft="376.0428577275,172.364705767733">
@@ -936,10 +1079,6 @@ Where Category_SK = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="208,41.6"
-          Id="Package\Set Ongoing Category_NDS"
-          TopLeft="275.000000585403,32.8588235153356" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
           TopLeft="377.371429164434,74.4588235153356">
@@ -962,24 +1101,32 @@ Where Category_SK = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="192.8,41.6"
-          Id="Package\Set Done Category_NDS"
-          TopLeft="277.142857732821,389.129411512675" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="374.971429175078,342.894117382963">
+          TopLeft="348.933333950667,342.894117382963">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,46.2352941297124"
+              EndConnector="-126.410884702594,45.1428571558796"
               Start="0,0"
-              End="0,38.7352941297124">
+              End="-126.410884702594,37.6428571558796">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,38.7352941297124" />
+                    End="0,14.3056356540356" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.3056356540356"
+                    Point2="0,18.3056356540356"
+                    Point3="-4,18.3056356540356" />
+                  <mssgle:LineSegment
+                    End="-122.410884702594,18.3056356540356" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-122.410884702594,18.3056356540356"
+                    Point2="-126.410884702594,18.3056356540356"
+                    Point3="-126.410884702594,22.3056356540356" />
+                  <mssgle:LineSegment
+                    End="-126.410884702594,37.6428571558796" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -988,32 +1135,112 @@ Where Category_SK = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="192,41.6"
-          Id="Package\Set Error Category_NDS"
-          TopLeft="553.571429749837,303.552941000854" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="462.800000617334,323.223529191908">
+          TopLeft="403.866667284001,342.894117382963">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="90.7714291325029,0"
+              EndConnector="118.15374178615,43.6840336291496"
               Start="0,0"
-              End="83.2714291325029,0">
+              End="118.15374178615,36.1840336291496">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="83.2714291325029,0" />
+                    End="0,13.7140760220955" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.7140760220955"
+                    Point2="0,17.7140760220955"
+                    Point3="4,17.7140760220955" />
+                  <mssgle:LineSegment
+                    End="114.15374178615,17.7140760220955" />
+                  <mssgle:CubicBezierSegment
+                    Point1="114.15374178615,17.7140760220955"
+                    Point2="118.15374178615,17.7140760220955"
+                    Point3="118.15374178615,21.7140760220955" />
+                  <mssgle:LineSegment
+                    End="118.15374178615,36.1840336291496" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="26.3943669100014,5,30.4826953125,9.7490234375"
+              BoundingBox="43.8355232368252,22.7140760220955,30.4826953125,9.7490234375"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="192,41.6"
+          Id="Package\Set LSET Category_NDS"
+          TopLeft="282.857143459272,508.401680247973" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="222.522449248073,429.636974538843">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="125.668027544532,78.7647057091301"
+              Start="0,0"
+              End="125.668027544532,71.2647057091301">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.8682546368377" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42.8682546368377"
+                    Point2="0,46.8682546368377"
+                    Point3="4,46.8682546368377" />
+                  <mssgle:LineSegment
+                    End="121.668027544532,46.8682546368377" />
+                  <mssgle:CubicBezierSegment
+                    Point1="121.668027544532,46.8682546368377"
+                    Point2="125.668027544532,46.8682546368377"
+                    Point3="125.668027544532,50.8682546368377" />
+                  <mssgle:LineSegment
+                    End="125.668027544532,71.2647057091301" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="522.020409070151,428.178151012113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-112.496598944213,80.2235292358601"
+              Start="0,0"
+              End="-112.496598944213,72.7235292358601">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,43.736314917206" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,43.736314917206"
+                    Point2="0,47.736314917206"
+                    Point3="-4,47.736314917206" />
+                  <mssgle:LineSegment
+                    End="-108.496598944213,47.736314917206" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-108.496598944213,47.736314917206"
+                    Point2="-112.496598944213,47.736314917206"
+                    Point3="-112.496598944213,51.736314917206" />
+                  <mssgle:LineSegment
+                    End="-112.496598944213,72.7235292358601" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -1025,25 +1252,21 @@ Where Category_SK = ?</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="154.4,41.6"
-          Id="Package\Load Category_NDS\Load AQI_Stage"
-          TopLeft="329.285714986677,45.1176470192762" />
-        <NodeLayout
-          Size="170.4,41.6"
-          Id="Package\Load Category_NDS\OLE DB Destination"
-          TopLeft="455.000000968575,320.435293867627" />
-        <NodeLayout
           Size="112.8,41.6"
           Id="Package\Load Category_NDS\Lookup"
           TopLeft="342.142857871189,123.847058759851" />
         <NodeLayout
+          Size="154.4,41.6"
+          Id="Package\Load Category_NDS\Load AQI_Stage"
+          TopLeft="329.285714986677,45.1176470192762" />
+        <NodeLayout
           Size="164.8,41.6"
           Id="Package\Load Category_NDS\OLE DB Command"
-          TopLeft="209.285714731229,322.470588008735" />
+          TopLeft="195.71428613091,325.670588054315" />
         <NodeLayout
-          Size="152.8,41.6"
-          Id="Package\Load Category_NDS\Derived Column"
-          TopLeft="470.714286716313,215.717646871141" />
+          Size="170.4,41.6"
+          Id="Package\Load Category_NDS\OLE DB Destination"
+          TopLeft="455.000000968575,320.435293867627" />
         <EdgeLayout
           Id="Package\Load Category_NDS.Paths[OLE DB Source Output]"
           TopLeft="402.514286428933,86.7176470192762">
@@ -1066,56 +1289,60 @@ Where Category_SK = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="152.8,41.6"
+          Id="Package\Load Category_NDS\Derived Column"
+          TopLeft="452.857143821157,223.258823424176" />
         <EdgeLayout
           Id="Package\Load Category_NDS.Paths[Lookup No Match Output]"
           TopLeft="416.009524537856,165.447058759851">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="131.104762178457,50.2705881112897"
+              EndConnector="113.247619283301,57.8117646643245"
               Start="0,0"
-              End="131.104762178457,42.7705881112897">
+              End="113.247619283301,50.3117646643245">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,16.5300863335617" />
+                    End="0,21.9039572002686" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,16.5300863335617"
-                    Point2="0,20.5300863335617"
-                    Point3="4,20.5300863335617" />
+                    Point1="0,21.9039572002686"
+                    Point2="0,25.9039572002686"
+                    Point3="4,25.9039572002686" />
                   <mssgle:LineSegment
-                    End="127.104762178457,20.5300863335617" />
+                    End="109.247619283301,25.9039572002686" />
                   <mssgle:CubicBezierSegment
-                    Point1="127.104762178457,20.5300863335617"
-                    Point2="131.104762178457,20.5300863335617"
-                    Point3="131.104762178457,24.5300863335617" />
+                    Point1="109.247619283301,25.9039572002686"
+                    Point2="113.247619283301,25.9039572002686"
+                    Point3="113.247619283301,29.9039572002686" />
                   <mssgle:LineSegment
-                    End="131.104762178457,42.7705881112897" />
+                    End="113.247619283301,50.3117646643245" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="9.74599437047851,25.5300863335617,111.6127734375,11.609375"
+              BoundingBox="0.817422922900498,30.9039572002686,111.6127734375,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Load Category_NDS.Paths[Derived Column Output]"
-          TopLeft="543.657143842444,257.317646871141">
+          TopLeft="529.371429526319,264.858823424176">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,63.1176469964862"
+              EndConnector="0,55.5764704434515"
               Start="0,0"
-              End="0,55.6176469964862">
+              End="0,48.0764704434515">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,55.6176469964862" />
+                    End="0,48.0764704434515" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1124,55 +1351,91 @@ Where Category_SK = ?</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="162.4,41.6"
+          Id="Package\Load Category_NDS\Derived Column 1"
+          TopLeft="204.285714720585,229.458823389991" />
         <EdgeLayout
           Id="Package\Load Category_NDS.Paths[Lookup Match Output]"
-          TopLeft="381.076191204523,165.447058759851">
+          TopLeft="381.076191204522,165.447058759851">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-89.3904764732943,157.023529248883"
+              EndConnector="-95.5904764839374,64.0117646301395"
               Start="0,0"
-              End="-89.3904764732943,149.523529248883">
+              End="-95.5904764839374,56.5117646301395">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,60.1270916652782" />
+                    End="0,22.1418675132878" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,60.1270916652782"
-                    Point2="0,64.1270916652782"
-                    Point3="-4,64.1270916652782" />
+                    Point1="0,22.1418675132878"
+                    Point2="0,26.1418675132878"
+                    Point3="-4,26.1418675132878" />
                   <mssgle:LineSegment
-                    End="-85.3904764732943,64.1270916652782" />
+                    End="-91.5904764839374,26.1418675132878" />
                   <mssgle:CubicBezierSegment
-                    Point1="-85.3904764732943,64.1270916652782"
-                    Point2="-89.3904764732943,64.1270916652782"
-                    Point3="-89.3904764732943,68.1270916652782" />
+                    Point1="-91.5904764839374,26.1418675132878"
+                    Point2="-95.5904764839374,26.1418675132878"
+                    Point3="-95.5904764839374,30.1418675132878" />
                   <mssgle:LineSegment
-                    End="-89.3904764732943,149.523529248883" />
+                    End="-95.5904764839374,56.5117646301395" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-92.8866249553971,69.1270916652782,96.3827734375,11.609375"
+              BoundingBox="-95.9866249607187,31.1418675132878,96.3827734375,11.609375"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Load Category_NDS.Paths[Derived Column Output1]"
+          TopLeft="281.800000425748,271.058823389991">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54.6117646643243"
+              Start="0,0"
+              End="0,47.1117646643243">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.1117646643243" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Category_NDS\Load AQI_Stage">
+    design-time-name="Package\Load Category_NDS\Lookup">
     <Properties>
       <Property>
-        <Name>DataSourceViewID</Name>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Category_NDS]</Value>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q2:string">Table</Value>
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -1190,25 +1453,15 @@ Where Category_SK = ?</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Load Category_NDS\Lookup">
+    design-time-name="Package\Load Category_NDS\Load AQI_Stage">
     <Properties>
       <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string">[dbo].[Category_NDS]</Value>
+        <Name>DataSourceViewID</Name>
       </Property>
       <Property>
         <Name>TableInfoObjectType</Name>
         <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
